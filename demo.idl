@@ -1,0 +1,46 @@
+// example IDL file
+
+namespace demo;
+
+attribute "priority";
+
+enum Color : byte { Red = 1, Green, Blue }
+
+///union Any { Monster, Weapon, Pickup }
+//union Any { Monster}
+union Any { Monster, Weapon}
+
+// struct的每个字段都为required
+//     table的每个字段都默认都是optional,但可以指定为required
+  
+struct Vec3 {
+  x:float;
+  y:float;
+  z:float;
+}
+
+/// 注释
+table Monster {
+  pos:Vec3;
+  mana:short = 150;
+  hp:short = 100;
+  name:string;
+  friendly:bool = false (deprecated, priority: 1);
+  inventory:[ubyte];
+  color:Color = Blue;
+  test:Any;
+}
+
+table Weapon {
+  pos:Vec3;
+  mana:short = 150;
+}
+
+root_type Monster;
+// root_type Weapon;
+
+// root_type的作用：
+//          在其table生成的go文件中，除Table中字段会生成相关函数外，
+//          会另外生成GetRootAsMonster()函数，便于调用
+//             func GetRootAsMonster(buf []byte, offset flatbuffers.UOffsetT) *Monster {   
+//          如不用也可,没有太大影响。 

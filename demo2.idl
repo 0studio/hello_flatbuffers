@@ -1,0 +1,14 @@
+namespace demo2;
+
+table User {
+  uiid: string;
+  name: string;
+}
+
+table RoomInfo {
+  id: uint;
+  users: [User];
+}
+
+root_type RoomInfo;
+
